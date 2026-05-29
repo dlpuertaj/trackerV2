@@ -10,179 +10,183 @@
 
 ## User Scenarios & Testing *(mandatory)*
 
-### User Story 1 - Add a Variable Expense Entry (Priority: P1)
+### User Story 1 - Add a Variable Expense Entry via Floating Form (Priority: P1)
 
-The user taps a button to add an expense, selects a variable expense
-type (one where the amount changes each time, e.g., "Groceries"),
-enters the amount and a short description, and confirms. The expense
-is saved and the balance decreases immediately.
+The user taps an "Add Expense" button at the bottom of the
+transactions table (005), next to the Add Income button. A floating
+form appears with: a dropdown to select the expense type, a text
+field for the amount, a text area for an optional description, a
+Save button, and a Cancel button. Only the type and amount are
+mandatory. On save, the app validates, stores the expense, updates
+the balance, and shows a success popup.
 
 **Why this priority**: Most day-to-day expenses have varying amounts.
 This covers the most common spending scenario.
 
-**Independent Test**: Start with a balance of 500. Add a variable
-expense of 50 (type: Groceries, description: "Weekly shop"). The
-balance MUST immediately show 450 and the entry MUST appear in the
-recent entries list.
+**Independent Test**: Start with a balance of 500. Tap "Add Expense"
+at the bottom of the transactions table. Select a variable type (e.g.,
+Groceries), enter amount 50, enter description "Weekly shop", tap
+Save. Popup MUST show "Expense added successfully" with updated
+balance (450). The entry MUST appear in the transactions table.
 
 **Acceptance Scenarios**:
 
-1. **Given** the user is on the main screen, **When** they tap the
-   "Add Expense" button, **Then** a list of expense types (both fixed
-   and variable) is displayed.
-2. **Given** the expense type list is shown, **When** the user selects
-   a variable expense type (e.g., Groceries), **Then** the input
-   screen for amount and description appears.
-3. **Given** the user is on the amount/description screen, **When**
-   they enter a valid amount (e.g., 75.50) and a description (e.g.,
-   "Dinner out"), **Then** they can confirm and save the entry.
-4. **Given** the user confirms a new expense entry, **When** the entry
-   is saved, **Then** the main screen balance decreases immediately to
-   reflect the expense.
-5. **Given** a new expense entry is saved, **When** the user views the
-   recent entries list, **Then** the new entry appears at the top with
-   its amount, type, and description, showing a negative indicator.
+1. **Given** the user is viewing the transactions table (005),
+   **When** they tap the "Add Expense" button at the bottom, **Then**
+   a floating form appears with: type dropdown, amount field,
+   description text area, Save button, and Cancel button.
+2. **Given** the floating form is open with a variable type selected,
+   **When** the user enters a valid amount and optional description,
+   **Then** the description field is optional and can be left blank.
+3. **Given** the floating form is open, **When** the user enters an
+   amount of 0 or a negative number and taps Save, **Then** a
+   validation error is shown and the entry is not saved.
+4. **Given** the floating form is open, **When** the user does not
+   select a type and taps Save, **Then** a validation error is shown.
+5. **Given** the floating form has valid data, **When** the user taps
+   Save, **Then** the expense is stored, the balance decreases, and
+   the form closes.
+6. **Given** the expense is saved successfully, **When** the form
+   closes, **Then** a success popup appears showing "Expense added
+   successfully" along with the updated balance.
 
 ---
 
 ### User Story 2 - Add a Fixed Expense Entry (Priority: P2)
 
-The user taps the add expense button, selects a fixed expense type
-(one with a preset amount, e.g., "Rent" at $1000), enters a short
-description, and confirms. The amount is pre-filled and does not need
-to be typed.
+The user selects a fixed expense type (e.g., "Rent" at $1000). The
+amount field is automatically pre-filled with the type's fixed amount.
+The user enters an optional description and taps Save.
 
 **Why this priority**: Fixed expenses like rent and subscriptions are
 common. Pre-filling the amount saves time and prevents entry errors.
 
 **Independent Test**: Start with a balance of 1500. Add a fixed
-expense of 1000 (type: Rent, description: "May rent"). The balance
-MUST immediately show 500 — the user did NOT have to type the 1000.
+expense (type: Rent, fixed amount: 1000). The amount field is
+pre-filled to 1000. Tap Save. Balance shows 500. Success popup
+appears.
 
 **Acceptance Scenarios**:
 
-1. **Given** the expense type list is shown, **When** the user selects
-   a fixed expense type (e.g., Rent with amount 1000), **Then** the
-   input screen appears with the amount pre-filled to 1000.
+1. **Given** the floating form is open, **When** the user selects a
+   fixed expense type (e.g., Rent, amount 1000), **Then** the amount
+   field is automatically filled with 1000.
 2. **Given** the amount is pre-filled for a fixed expense, **When**
-   the user enters an optional description and confirms, **Then** the
-   entry is saved with the pre-filled amount.
+   the user enters an optional description and taps Save, **Then**
+   the entry is saved with the pre-filled amount.
 3. **Given** a fixed expense is saved, **When** the balance updates,
    **Then** it decreases by the fixed amount.
 
 ---
 
-### User Story 3 - Cancel or Abort Adding an Expense (Priority: P3)
+### User Story 3 - Cancel Adding an Expense (Priority: P3)
 
-The user can cancel adding an expense at any point — from the type
-selection screen or the amount/description screen — without saving any
-data.
+The user can cancel adding an expense at any point while the floating
+form is open by tapping Cancel, without saving any data.
 
-**Why this priority**: Users may change their mind or need to verify
-information before committing an expense.
+**Why this priority**: Users may change their mind mid-flow.
 
-**Independent Test**: Start the add expense flow, select a type, enter
-some data, then tap cancel. No entry is saved and the balance is
-unchanged.
+**Independent Test**: Open the form, select a type, enter some data,
+then tap Cancel. No entry is saved. Balance is unchanged.
 
 **Acceptance Scenarios**:
 
-1. **Given** the user is on the type selection screen, **When** they
-   tap a back/cancel button, **Then** they return to the main screen
-   and no entry is created.
-2. **Given** the user is on the amount/description screen, **When**
-   they tap a back/cancel button, **Then** they return to the main
-   screen and no entry is created.
+1. **Given** the floating form is open, **When** the user taps Cancel,
+   **Then** the form closes and no entry is created.
 
 ---
 
 ### Edge Cases
 
-- When no expense types have been created yet, the add expense flow
-  shows a message prompting the user to create an expense type first
-- When the user enters an amount of 0 or a negative number for a
-  variable expense, the app shows a validation error and prevents
-  saving
-- When the user enters a very large amount (e.g., 999999999.99), the
-  app accepts and displays it without formatting issues
-- When the description exceeds the maximum length, the app shows a
-  character limit warning
+- When no expense types exist, the form shows a message directing the
+  user to create expense types first
+- When the amount is 0 or negative, validation error prevents saving
+- When the amount has more than 2 decimal places, app rounds or shows
+  error
+- When the description exceeds 200 characters, app shows a warning
 - When the description is left empty, the entry is still saved
-- When the user is in the add flow and the app is backgrounded, no
-  partial data is persisted
+- When the app is backgrounded while the form is open, no partial data
+  is persisted
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
-- **FR-001**: The main screen MUST have a clearly visible button to
-  add a new expense entry.
-- **FR-002**: Tapping the add expense button MUST display a list of
-  all created expense types, clearly showing which are fixed and which
-  are variable.
-- **FR-003**: Selecting a variable expense type MUST show an input
-  form with fields for amount (required) and description (optional).
-- **FR-004**: Selecting a fixed expense type MUST show an input form
-  with the amount pre-filled to the type's fixed amount and a
-  description field (optional).
-- **FR-005**: The amount field for variable expenses MUST accept
-  positive decimal numbers with up to 2 decimal places.
-- **FR-006**: The pre-filled amount for fixed expenses MUST NOT be
-  editable by the user (it is defined by the type).
-- **FR-007**: The description field MUST accept plain text up to 200
-  characters.
-- **FR-008**: The user MUST be able to confirm and save, or cancel and
-  return to the main screen at any point.
-- **FR-009**: After saving, the entry MUST be persisted locally and
-  survive app restarts.
-- **FR-010**: After saving, the main screen balance MUST decrease
-  immediately to reflect the expense.
-- **FR-011**: After saving, the new entry MUST appear at the top of
-  the recent entries list with a negative indicator on its amount.
-- **FR-012**: The app MUST validate that the amount is a positive
-  number before allowing save.
-- **FR-013**: A zero or negative amount MUST show an error message and
-  prevent saving.
-- **FR-014**: If no expense types exist, the add expense flow MUST
-  inform the user and direct them to create types first.
+- **FR-001**: The transactions table view (005) MUST have an "Add
+  Expense" button positioned at the bottom, next to the "Add Income"
+  button.
+- **FR-002**: Tapping "Add Expense" MUST open a floating form (modal
+  or bottom sheet) with: expense type dropdown, amount field,
+  description text area, Save button, and Cancel button.
+- **FR-003**: The type dropdown MUST display all expense types
+  created by the user (from 003-entry-type-management), clearly
+  showing which are fixed and which are variable.
+- **FR-004**: Selecting a variable expense type leaves amount and
+  description fields empty for the user to fill.
+- **FR-005**: Selecting a fixed expense type MUST automatically fill
+  the amount field with the type's fixed amount.
+- **FR-006**: The amount field for fixed expenses MAY be editable
+  (pre-filled but not locked).
+- **FR-007**: The amount field MUST accept positive decimal numbers
+  with up to 2 decimal places.
+- **FR-008**: The description text area MUST accept plain text up to
+  200 characters and MUST be optional.
+- **FR-009**: The type and amount MUST be mandatory — Save MUST show
+  validation errors if either is missing or invalid.
+- **FR-010**: Tapping Save with valid data MUST persist the entry
+  locally and update the UI (balance + transactions table).
+- **FR-011**: After successful save, a success popup MUST appear
+  showing "Expense added successfully" along with the updated balance.
+- **FR-012**: The success popup MUST have a dismiss action (e.g.,
+  "OK" button) closing it and returning to the transactions table.
+- **FR-013**: Tapping Cancel MUST close the floating form without
+  saving any data.
+- **FR-014**: The app MUST validate that the amount is a positive
+  number before saving.
+- **FR-015**: A zero or negative amount MUST show an error message
+  and prevent saving.
+- **FR-016**: If no expense types exist, the form MUST show a message
+  directing the user to create types first.
 
 ### Key Entities *(include if feature involves data)*
 
-- **Entry**: Extends the Entry entity from 001-balance-overview.
-  An expense entry has: type (reference to a user-created ExpenseType
-  from 003), amount (positive decimal; pre-filled from type if fixed),
-  description (text, optional), date (auto-recorded timestamp), and a
-  unique identifier.
+- **Entry**: Reuses the shared Entry entity from 001-balance-overview.
+  An expense entry has: type (reference to an ExpenseType from
+  003-entry-type-management), amount (positive decimal; pre-filled
+  from type if fixed), description (text, optional), date
+  (auto-recorded timestamp), and a unique identifier.
 
 ## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 
 - **SC-001**: A user can add a variable expense (button tap through
-  confirmation) in under 30 seconds on their first attempt.
+  completion popup) in under 30 seconds.
 - **SC-002**: A user can add a fixed expense in under 20 seconds
-  (amount is pre-filled, fewer steps).
-- **SC-003**: After adding an expense, the displayed balance decreases
-  within 1 second (no manual refresh needed).
-- **SC-004**: The new expense appears in the recent entries list
-  immediately after saving, with a negative amount indicator.
-- **SC-005**: Invalid inputs (zero, negative, non-numeric) are
-  rejected with a clear error message 100% of the time.
-- **SC-006**: Fixed expense amounts are always correct (match the
-  type's fixed amount) and cannot be accidentally changed by the user.
+  (amount pre-filled).
+- **SC-003**: The success popup appears within 1 second of tapping
+  Save.
+- **SC-004**: The balance displayed in the success popup matches the
+  updated balance in the main view.
+- **SC-005**: The new expense entry appears in the transactions table
+  immediately after dismissing the success popup.
+- **SC-006**: Invalid inputs (zero, negative, non-numeric, no type)
+  are rejected with a clear error message 100% of the time.
 - **SC-007**: All saved expense entries persist correctly after the
   app is closed and reopened.
 
 ## Assumptions
 
-- This feature builds on 001-balance-overview (balance display and
-  entries list) and 003-entry-type-management (user-created expense
-  types with fixed/variable distinction).
-- If 003-entry-type-management is not yet implemented, this feature
-  assumes at least one expense type exists (for testing/development).
-- Fixed expense amounts are read-only at entry time — the user cannot
-  override them. To change the amount, the user edits the type itself.
+- This feature builds on: 001-balance-overview (balance, shared Entry
+  model), 003-entry-type-management (user-created expense types with
+  fixed/variable distinction), and 005-view-transactions (transactions
+  table with Add Expense button at bottom).
+- The floating form is a modal bottom sheet that appears over the
+  transactions table.
+- The success popup is a simple dialog with an "OK" dismiss button.
+- Fixed expense amounts are pre-filled but editable (the user may
+  override them at entry time).
+- If 003-entry-type-management is not yet implemented, at least one
+  hardcoded expense type exists for development/testing.
 - The date of the entry is automatically set to the current date and
-  time when saved (not user-selectable in this version).
-- The add expense flow mirrors the add income flow (002) in structure
-  but is a separate button/entry point.
+  time (not user-selectable).

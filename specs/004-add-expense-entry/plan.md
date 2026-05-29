@@ -1,113 +1,121 @@
-# Implementation Plan: [FEATURE]
+# Implementation Plan: Add Expense Entry
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
+**Branch**: `004-add-expense-entry` | **Date**: 2026-05-24 | **Spec**: [spec.md](spec.md)
 
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**Input**: Feature specification from `specs/004-add-expense-entry/spec.md`
 
 **Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
 
 ## Summary
 
-[Extract from feature spec: primary requirement + technical approach from research]
+Add a floating form for creating expense entries, accessible from an
+"Add Expense" button at the bottom of the transactions table (005),
+next to the Add Income button (002). The form includes a type dropdown
+(variable vs fixed), amount field (auto-filled for fixed types),
+optional description, Save and Cancel. On save, validate, persist,
+update balance in real-time, and show a success popup.
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
+**Language/Version**: Dart (latest stable channel)
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]
+**Primary Dependencies**: Flutter SDK only — no external packages.
+Floating form uses built-in `showModalBottomSheet`.
 
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]
+**Storage**: Requires write capability to shared `EntryRepository`
+(via `addEntry()`). Fixed expense types read from `ExpenseType`
+repository (003).
 
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
+**Testing**: `flutter_test` for widget tests (form, validation,
+auto-fill for fixed types, save/cancel flow, success popup), `test`
+for pure Dart unit tests. TDD mandatory per Constitution Principle I.
 
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]
+**Target Platform**: Android (min SDK 21+), iOS (12.0+)
 
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+**Project Type**: mobile-app (Flutter)
 
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]
+**Performance Goals**: Form opens within 200ms. Save completes and
+popup appears within 500ms.
 
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]
+**Constraints**: Offline-only, no external dependencies. Type and
+amount mandatory. Fixed types auto-fill amount (editable). Description
+optional.
 
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]
-
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Scale/Scope**: Single user. Expense creation only — no edit or delete.
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+### Principle I — Test-Driven Development (Non-Negotiable)
+- Validation logic (amount, type required) MUST have unit tests first.
+- Widget tests MUST verify: form opens, fixed-type auto-fill, variable
+  type empty fields, validation errors, save/cancel, success popup.
+- **Status**: ✅ Compliant.
+
+### Principle II — Technology Stack
+- Flutter + Dart. Built-in widgets only (DropdownButton, TextField,
+  showModalBottomSheet).
+- **Status**: ✅ Compliant.
+
+### Principle III — Offline-First Architecture
+- No network calls. All data local. No authentication.
+- **Status**: ✅ Compliant.
+
+### Principle IV — Minimal External Dependencies
+- Zero external packages. Pure Flutter SDK.
+- **Status**: ✅ Compliant.
+
+### Principle V — Simplicity & Modern UX
+- Floating form overlay — user stays in context.
+- Fixed types auto-fill amount, reducing taps.
+- Success popup confirms with updated balance.
+- **Status**: ✅ Compliant.
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/[###-feature]/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+specs/004-add-expense-entry/
+├── plan.md              # This file
+├── research.md          # Phase 0 output
+├── data-model.md        # Phase 1 output
+├── quickstart.md        # Phase 1 output
+├── contracts/           # Phase 1 output
+└── tasks.md             # Phase 2 output
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
+lib/
 ├── models/
+│   └── entry.dart              # Shared (from 001)
 ├── services/
-├── cli/
-└── lib/
+│   ├── entry_repository.dart   # Shared (extended by 002)
+│   └── expense_validator.dart  # Validation logic
+├── widgets/
+│   ├── add_expense_button.dart # Button at bottom of transactions table
+│   ├── expense_form.dart       # Floating form with auto-fill for fixed types
+│   └── success_popup.dart      # "Expense added successfully" dialog
+└── pages/
+    └── transactions_page.dart  # Updated with both add buttons
 
-tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+test/
+├── services/
+│   └── expense_validator_test.dart
+├── widgets/
+│   ├── add_expense_button_test.dart
+│   ├── expense_form_test.dart
+│   └── success_popup_test.dart
+└── pages/
+    └── transactions_page_test.dart
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: Single Flutter project. Mirrors 002 structure
+with expense-specific validation and fixed-type auto-fill logic.
 
 ## Complexity Tracking
 
-> **Fill ONLY if Constitution Check has violations that must be justified**
-
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+No violations — all gates pass without justification needed.
