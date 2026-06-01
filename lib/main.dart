@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/pages/home_page.dart';
+import 'package:money_tracker/services/entry_repository.dart';
 import 'package:money_tracker/theme/app_theme.dart';
 
 void main() {
-  runApp(const MoneyTrackerApp());
+  runApp(MoneyTrackerApp());
 }
 
 class MoneyTrackerApp extends StatelessWidget {
-  const MoneyTrackerApp({super.key});
+  MoneyTrackerApp({super.key});
+
+  final EntryRepository _repository = EntryRepository();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Money Tracker',
       theme: AppTheme.light,
-      home: const Scaffold(
-        body: Center(
-          child: Text('Money Tracker'),
-        ),
-      ),
+      home: HomePage(repository: _repository),
     );
   }
 }
