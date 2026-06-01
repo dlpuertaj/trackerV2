@@ -1,35 +1,21 @@
-# Specification Quality Checklist: View Transactions
+# Requirements Checklist: View Transactions
 
-**Purpose**: Validate specification completeness and quality before proceeding to planning
-**Created**: 2026-05-24
-**Feature**: [spec.md](../spec.md)
+## Functional Requirements
 
-## Content Quality
+- [ ] FR-001: Main screen layout: balance (top), table (middle), buttons (bottom)
+- [ ] FR-002: Table in reverse-chronological order (most recent first)
+- [ ] FR-003: Each row shows amount (with sign), date (short format), name
+- [ ] FR-004: Income and expense rows have distinct background colours
+- [ ] FR-005: Table scrolls when entries exceed available space
+- [ ] FR-006: Tap opens floating detail form
+- [ ] FR-007: Detail form shows: amount, date, type, category, description
+- [ ] FR-008: Detail form has dismiss action
+- [ ] FR-009: Empty state shows "No transactions yet"
 
-- [x] No implementation details (languages, frameworks, APIs)
-- [x] Focused on user value and business needs
-- [x] Written for non-technical stakeholders
-- [x] All mandatory sections completed
+## Success Criteria
 
-## Requirement Completeness
-
-- [x] No [NEEDS CLARIFICATION] markers remain
-- [x] Requirements are testable and unambiguous
-- [x] Success criteria are measurable
-- [x] Success criteria are technology-agnostic (no implementation details)
-- [x] All acceptance scenarios are defined
-- [x] Edge cases are identified
-- [x] Scope is clearly bounded
-- [x] Dependencies and assumptions identified
-
-## Feature Readiness
-
-- [x] All functional requirements have clear acceptance criteria
-- [x] User scenarios cover primary flows
-- [x] Feature meets measurable outcomes defined in Success Criteria
-- [x] No implementation details leak into specification
-
-## Notes
-
-- Builds on shared Entry model from 001-balance-overview
-- Separate screen from main balance view
+- [ ] SC-001: Table visible immediately on app open (no extra navigation)
+- [ ] SC-002: Income/expense distinguishable at a glance (<1s)
+- [ ] SC-003: Detail form opens within 500ms of tap
+- [ ] SC-004: Table scrolls at 60fps with 100+ entries
+- [ ] SC-005: Detail form displays all fields correctly for every entry
