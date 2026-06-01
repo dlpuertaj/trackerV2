@@ -1,5 +1,5 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan at
-specs/000-project-foundation/plan.md
+specs/001-balance-overview/plan.md
 <!-- SPECKIT END -->
