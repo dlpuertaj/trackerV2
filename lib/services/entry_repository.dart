@@ -17,6 +17,10 @@ class EntryRepository {
       ..sort((a, b) => b.date.compareTo(a.date));
   }
 
+  List<String> getIncomeTypes() {
+    return ['Salary', 'Loan', 'Investment', 'Gift', 'Other'];
+  }
+
   void addEntry(Entry entry) {
     _entries.add(entry);
     _controller.add(null);
