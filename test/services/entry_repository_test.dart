@@ -105,6 +105,12 @@ void main() {
       expect(notificationCount, 1);
     });
 
+    test('getIncomeTypes returns hardcoded fallback list', () {
+      final types = repository.getIncomeTypes();
+
+      expect(types, ['Salary', 'Loan', 'Investment', 'Gift', 'Other']);
+    });
+
     test('getAllEntries returns entries in reverse-chronological order', () {
       final now = DateTime.now();
       final entry1 = Entry(
