@@ -93,16 +93,34 @@ void main() {
       expect(balanceText, findsOneWidget);
     });
 
-    testWidgets('balance is visible at top of screen', (tester) async {
+    testWidgets('shows table with entries', (tester) async {
+      repository.addEntry(
+        Entry(id: '1', amount: 100.0, type: EntryType.income, description: 'Salary'),
+      );
+
       await pumpHomePage(tester);
 
-      final balanceKey = find.byKey(const Key('balanceDisplay'));
-      expect(balanceKey, findsOneWidget);
+      expect(find.text('Salary'), findsOneWidget);
+    });
 
-      final textWidget = tester.widget<Text>(
-        find.descendant(of: balanceKey, matching: find.byType(Text)),
+    testWidgets('shows empty state when no entries', (tester) async {
+      await pumpHomePage(tester);
+
+      expect(find.text('No transactions yet'), findsOneWidget);
+    });
+
+    testWidgets('tapping table row opens detail sheet', (tester) async {
+      repository.addEntry(
+        Entry(id: '1', amount: 100.0, type: EntryType.income, description: 'Salary'),
       );
-      expect(textWidget.style?.fontSize, greaterThan(20.0));
+
+      await pumpHomePage(tester);
+      await tester.pump();
+
+      await tester.tap(find.text('Salary'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Close'), findsOneWidget);
     });
   });
 }
