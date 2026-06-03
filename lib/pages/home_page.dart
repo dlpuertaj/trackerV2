@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:money_tracker/models/entry.dart';
 import 'package:money_tracker/services/entry_repository.dart';
 import 'package:money_tracker/widgets/balance_display.dart';
-import 'package:money_tracker/widgets/breakdown_section.dart';
-import 'package:money_tracker/widgets/entry_list.dart';
+import 'package:money_tracker/widgets/transactions_table.dart';
+import 'package:money_tracker/widgets/transaction_detail.dart';
 
 class HomePage extends StatefulWidget {
   final EntryRepository repository;
@@ -17,8 +17,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   double _balance = 0.0;
-  double _incomeTotal = 0.0;
-  double _expenseTotal = 0.0;
   List<Entry> _entries = [];
   StreamSubscription<void>? _subscription;
 
@@ -47,8 +45,6 @@ class _HomePageState extends State<HomePage> {
         .fold<double>(0.0, (sum, e) => sum + e.amount);
     setState(() {
       _balance = income - expense;
-      _incomeTotal = income;
-      _expenseTotal = expense;
       _entries = entries;
     });
   }
@@ -62,12 +58,13 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           BalanceDisplay(key: const Key('balanceDisplay'), balance: _balance),
-          BreakdownSection(
-            incomeTotal: _incomeTotal,
-            expenseTotal: _expenseTotal,
-          ),
           Expanded(
-            child: EntryList(entries: _entries),
+            child: TransactionsTable(
+              entries: _entries,
+              onTapEntry: (entry) {
+                showTransactionDetail(context, entry: entry);
+              },
+            ),
           ),
         ],
       ),
