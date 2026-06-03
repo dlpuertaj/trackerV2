@@ -9,8 +9,8 @@ Tests MUST be written first and MUST fail before any implementation code is writ
 
 ## Phase 1: Setup
 
-- [ ] T001 Run `flutter analyze` to confirm project compiles
-- [ ] T002 Run `flutter test` to confirm existing tests pass
+- [X] T001 Run `flutter analyze` to confirm project compiles
+- [X] T002 Run `flutter test` to confirm existing tests pass
 
 ---
 
@@ -20,14 +20,14 @@ Tests MUST be written first and MUST fail before any implementation code is writ
 
 ### Tests (write first, must fail)
 
-- [ ] T003 [P] Write unit test for `EntryRepository.addEntry()` in `test/services/entry_repository_test.dart` — verify entry is stored, id auto-generated if null, date auto-set if null, `onChange` fires
-- [ ] T004 [P] Write unit test for `EntryRepository.getIncomeTypes()` in `test/services/entry_repository_test.dart` — verify hardcoded fallback list: Salary, Loan, Investment, Gift, Other
-- [ ] T005 [P] Write unit test for `IncomeValidator` in `test/services/income_validator_test.dart` — verify all validation rules: type required, amount > 0, max 2 decimal places, max 999999999.99, description ≤ 200 chars
+- [X] T003 [P] Write unit test for `EntryRepository.addEntry()` in `test/services/entry_repository_test.dart` — verify entry is stored, id auto-generated if null, date auto-set if null, `onChange` fires
+- [X] T004 [P] Write unit test for `EntryRepository.getIncomeTypes()` in `test/services/entry_repository_test.dart` — verify hardcoded fallback list: Salary, Loan, Investment, Gift, Other
+- [X] T005 [P] Write unit test for `IncomeValidator` in `test/services/income_validator_test.dart` — verify all validation rules: type required, amount > 0, max 2 decimal places, max 999999999.99, description ≤ 200 chars
 
 ### Implementation
 
-- [ ] T006 Extend `EntryRepository` in `lib/services/entry_repository.dart` — add `addEntry()` (auto-generates id, sets date, stores, fires `onChange`) and `getIncomeTypes()` (returns hardcoded fallback list)
-- [ ] T007 Implement `IncomeValidator` in `lib/services/income_validator.dart` — pure Dart class with `validate(IncomeFormData)` returning `ValidationResult` with field-level errors
+- [X] T006 Extend `EntryRepository` in `lib/services/entry_repository.dart` — add `addEntry()` (auto-generates id, sets date, stores, fires `onChange`) and `getIncomeTypes()` (returns hardcoded fallback list)
+- [X] T007 Implement `IncomeValidator` in `lib/services/income_validator.dart` — pure Dart class with `validate(IncomeFormData)` returning `ValidationResult` with field-level errors
 
 **Checkpoint**: `flutter test` passes for all repository + validator tests
 
@@ -41,17 +41,17 @@ Tests MUST be written first and MUST fail before any implementation code is writ
 
 ### Tests (write first, must fail)
 
-- [ ] T008 [P] [US1] Write widget test for `IncomeForm` in `test/widgets/income_form_test.dart` — verify form renders with type dropdown, amount field, description field, Save/Cancel buttons
-- [ ] T009 [P] [US1] Write widget test for form validation in `test/widgets/income_form_test.dart` — verify "Please select a type" and "Amount must be positive" errors on Save with invalid data
-- [ ] T010 [P] [US1] Write widget test for save flow in `test/widgets/income_form_test.dart` — verify valid data calls `addEntry` and returns form data
-- [ ] T011 [P] [US1] Write widget test for `SuccessPopup` in `test/widgets/success_popup_test.dart` — verify dialog shows "Income added successfully" and updated balance with dismiss button
-- [ ] T012 [P] [US1] Write widget test for `AddIncomeButton` in `test/widgets/add_income_button_test.dart` — verify tap opens `IncomeForm`
+- [X] T008 [P] [US1] Write widget test for `IncomeForm` in `test/widgets/income_form_test.dart` — verify form renders with type dropdown, amount field, description field, Save/Cancel buttons
+- [X] T009 [P] [US1] Write widget test for form validation in `test/widgets/income_form_test.dart` — verify "Please select a type" and "Amount must be positive" errors on Save with invalid data
+- [X] T010 [P] [US1] Write widget test for save flow in `test/widgets/income_form_test.dart` — verify valid data calls `addEntry` and returns form data
+- [X] T011 [P] [US1] Write widget test for `SuccessPopup` in `test/widgets/success_popup_test.dart` — verify dialog shows "Income added successfully" and updated balance with dismiss button
+- [X] T012 [P] [US1] Write widget test for `AddIncomeButton` in `test/widgets/add_income_button_test.dart` — verify tap opens `IncomeForm`
 
 ### Implementation
 
-- [ ] T013 [US1] Implement `IncomeForm` in `lib/widgets/income_form.dart` — `showModalBottomSheet` with `DropdownButton` for types, `TextField` for amount, `TextField` for description (optional), Save/Cancel buttons, calls `IncomeValidator` on Save
-- [ ] T014 [US1] Implement `SuccessPopup` in `lib/widgets/success_popup.dart` — `AlertDialog` with title "Income Added Successfully", body showing formatted updated balance, "OK" dismiss button
-- [ ] T015 [US1] Implement `AddIncomeButton` in `lib/widgets/add_income_button.dart` — `ElevatedButton` that opens `IncomeForm`, wires Save to `EntryRepository.addEntry()`, shows `SuccessPopup` on completion
+- [X] T013 [US1] Implement `IncomeForm` in `lib/widgets/income_form.dart` — `showModalBottomSheet` with `DropdownButton` for types, `TextField` for amount, `TextField` for description (optional), Save/Cancel buttons, calls `IncomeValidator` on Save
+- [X] T014 [US1] Implement `SuccessPopup` in `lib/widgets/success_popup.dart` — `AlertDialog` with title "Income Added Successfully", body showing formatted updated balance, "OK" dismiss button
+- [X] T015 [US1] Implement `AddIncomeButton` in `lib/widgets/add_income_button.dart` — `ElevatedButton` that opens `IncomeForm`, wires Save to `EntryRepository.addEntry()`, shows `SuccessPopup` on completion
 
 **Checkpoint**: `flutter test` passes. Tap Add Income → form → valid save → success popup with updated balance → entry in table.
 
@@ -59,8 +59,8 @@ Tests MUST be written first and MUST fail before any implementation code is writ
 
 ## Phase 4: Polish
 
-- [ ] T016 Run `flutter analyze` — zero errors and warnings
-- [ ] T017 Run `flutter test` — all 12+ tests pass
+- [X] T016 Run `flutter analyze` — zero errors and warnings
+- [X] T017 Run `flutter test` — all 12+ tests pass
 
 ---
 
