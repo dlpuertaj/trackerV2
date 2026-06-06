@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:money_tracker/models/entry.dart';
 import 'package:money_tracker/pages/home_page.dart';
 import 'package:money_tracker/services/entry_repository.dart';
+import 'package:money_tracker/services/type_repository.dart';
 import 'package:money_tracker/theme/app_theme.dart';
 
 void main() {
   final repository = EntryRepository();
+  final typeRepository = TypeRepository();
   _seedDummyData(repository);
-  runApp(MoneyTrackerApp(repository: repository));
+  runApp(MoneyTrackerApp(
+    repository: repository,
+    typeRepository: typeRepository,
+  ));
 }
 
 void _seedDummyData(EntryRepository repository) {
@@ -75,15 +80,23 @@ void _seedDummyData(EntryRepository repository) {
 
 class MoneyTrackerApp extends StatelessWidget {
   final EntryRepository repository;
+  final TypeRepository typeRepository;
 
-  const MoneyTrackerApp({super.key, required this.repository});
+  const MoneyTrackerApp({
+    super.key,
+    required this.repository,
+    required this.typeRepository,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Money Tracker',
       theme: AppTheme.light,
-      home: HomePage(repository: repository),
+      home: HomePage(
+        repository: repository,
+        typeRepository: typeRepository,
+      ),
     );
   }
 }

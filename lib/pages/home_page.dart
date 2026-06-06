@@ -2,14 +2,22 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:money_tracker/models/entry.dart';
 import 'package:money_tracker/services/entry_repository.dart';
+import 'package:money_tracker/services/type_repository.dart';
+import 'package:money_tracker/widgets/add_expense_button.dart';
+import 'package:money_tracker/widgets/add_income_button.dart';
 import 'package:money_tracker/widgets/balance_display.dart';
 import 'package:money_tracker/widgets/transactions_table.dart';
 import 'package:money_tracker/widgets/transaction_detail.dart';
 
 class HomePage extends StatefulWidget {
   final EntryRepository repository;
+  final TypeRepository typeRepository;
 
-  const HomePage({super.key, required this.repository});
+  const HomePage({
+    super.key,
+    required this.repository,
+    required this.typeRepository,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -64,6 +72,20 @@ class _HomePageState extends State<HomePage> {
               onTapEntry: (entry) {
                 showTransactionDetail(context, entry: entry);
               },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: AddIncomeButton(typeRepository: widget.typeRepository),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: AddExpenseButton(repository: widget.repository),
+                ),
+              ],
             ),
           ),
         ],
