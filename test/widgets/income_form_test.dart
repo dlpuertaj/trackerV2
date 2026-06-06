@@ -56,7 +56,7 @@ void main() {
       expect(find.text('Amount must be positive'), findsOneWidget);
     });
 
-    testWidgets('saves entry on valid input', (tester) async {
+    testWidgets('saves income entry on valid input', (tester) async {
       await openForm(tester);
       await tester.tap(find.text('Open'));
       await tester.pumpAndSettle();
@@ -71,7 +71,7 @@ void main() {
       await tester.enterText(find.byType(TextField).first, '5000');
 
       // Enter description
-      await tester.enterText(find.byType(TextField).last, 'Monthly salary');
+      await tester.enterText(find.byType(TextField).last, 'Monthly pay');
 
       // Save
       await tester.tap(find.text('Save'));
@@ -82,7 +82,29 @@ void main() {
       expect(entries.first.amount, 5000.0);
       expect(entries.first.type, EntryType.income);
       expect(entries.first.category, 'Salary');
-      expect(entries.first.description, 'Monthly salary');
+      expect(entries.first.description, 'Monthly pay');
+    });
+
+    testWidgets('Cancel closes form without saving', (tester) async {
+      await openForm(tester);
+      await tester.tap(find.text('Open'));
+      await tester.pumpAndSettle();
+
+      // Select type and enter data
+      await tester.tap(find.byType(DropdownButtonFormField<String>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Salary').last);
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField).first, '5000');
+
+      // Tap Cancel
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+
+      // Verify no entry was saved
+      expect(repository.getAllEntries(), isEmpty);
+      // Verify form is closed
+      expect(find.text('Add Income'), findsNothing);
     });
   });
 }

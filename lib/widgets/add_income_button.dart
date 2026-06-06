@@ -30,6 +30,7 @@ class AddIncomeButton extends StatelessWidget {
                 .fold<double>(0.0, (sum, e) => sum + e.amount);
           showSuccessPopup(
             context,
+            title: 'Income Added Successfully',
             updatedBalance: balance,
           );
         }

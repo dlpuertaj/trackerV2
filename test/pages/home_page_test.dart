@@ -3,25 +3,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:money_tracker/models/entry.dart';
 import 'package:money_tracker/pages/home_page.dart';
 import 'package:money_tracker/services/entry_repository.dart';
-import 'package:money_tracker/services/type_repository.dart';
-
 void main() {
   group('HomePage', () {
     late EntryRepository repository;
-    late TypeRepository typeRepository;
 
     setUp(() {
       repository = EntryRepository();
-      typeRepository = TypeRepository();
     });
 
     Future<void> pumpHomePage(WidgetTester tester) {
       return tester.pumpWidget(
         MaterialApp(
-          home: HomePage(
-            repository: repository,
-            typeRepository: typeRepository,
-          ),
+          home: HomePage(repository: repository),
         ),
       );
     }

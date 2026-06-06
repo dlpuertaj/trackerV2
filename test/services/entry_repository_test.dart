@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:money_tracker/models/entry.dart';
-import 'package:money_tracker/models/expense_type.dart';
 import 'package:money_tracker/services/entry_repository.dart';
 
 void main() {
@@ -125,6 +124,17 @@ void main() {
       expect(types[2].name, 'Utilities');
       expect(types[2].isFixed, isFalse);
       expect(types[2].fixedAmount, isNull);
+    });
+
+    test('getIncomeTypes returns hardcoded fallback list', () {
+      final types = repository.getIncomeTypes();
+
+      expect(types.length, 5);
+      expect(types[0], 'Salary');
+      expect(types[1], 'Loan');
+      expect(types[2], 'Investment');
+      expect(types[3], 'Gift');
+      expect(types[4], 'Other');
     });
 
     test('getAllEntries returns entries in reverse-chronological order', () {

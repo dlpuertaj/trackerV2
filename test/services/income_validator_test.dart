@@ -85,8 +85,7 @@ void main() {
       expect(result.amountError, 'Amount must be positive');
     });
 
-    test('returns amountError when amount has more than 2 decimal places',
-        () {
+    test('returns amountError when amount has more than 2 decimal places', () {
       final result = IncomeValidator.validateIncome(
         type: 'Salary',
         amountText: '50.123',
