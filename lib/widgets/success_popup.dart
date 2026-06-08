@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 Future<void> showSuccessPopup(
   BuildContext context, {
+  required String title,
   required double updatedBalance,
 }) {
   final formattedBalance = updatedBalance < 0
@@ -11,7 +12,7 @@ Future<void> showSuccessPopup(
   return showDialog<void>(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Income Added Successfully'),
+      title: Text(title),
       content: Text('Your new balance is $formattedBalance'),
       actions: [
         TextButton(

@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:money_tracker/services/income_validator.dart';
+import 'package:money_tracker/services/expense_validator.dart';
 
 void main() {
-  group('IncomeValidator', () {
+  group('ExpenseValidator', () {
     test('returns valid for complete valid input', () {
-      final result = IncomeValidator.validateIncome(
-        type: 'Salary',
-        amountText: '5000.00',
-        description: 'Monthly pay',
+      final result = ExpenseValidator.validateExpense(
+        type: 'Groceries',
+        amountText: '50.00',
+        description: 'Weekly shop',
       );
 
       expect(result.isValid, isTrue);
@@ -17,8 +17,8 @@ void main() {
     });
 
     test('returns valid without description', () {
-      final result = IncomeValidator.validateIncome(
-        type: 'Salary',
+      final result = ExpenseValidator.validateExpense(
+        type: 'Groceries',
         amountText: '100',
       );
 
@@ -26,7 +26,7 @@ void main() {
     });
 
     test('returns typeError when type is null', () {
-      final result = IncomeValidator.validateIncome(
+      final result = ExpenseValidator.validateExpense(
         type: null,
         amountText: '100',
       );
@@ -36,7 +36,7 @@ void main() {
     });
 
     test('returns typeError when type is empty', () {
-      final result = IncomeValidator.validateIncome(
+      final result = ExpenseValidator.validateExpense(
         type: '',
         amountText: '100',
       );
@@ -46,8 +46,8 @@ void main() {
     });
 
     test('returns amountError when amount is null', () {
-      final result = IncomeValidator.validateIncome(
-        type: 'Salary',
+      final result = ExpenseValidator.validateExpense(
+        type: 'Groceries',
         amountText: null,
       );
 
@@ -56,8 +56,8 @@ void main() {
     });
 
     test('returns amountError when amount is empty', () {
-      final result = IncomeValidator.validateIncome(
-        type: 'Salary',
+      final result = ExpenseValidator.validateExpense(
+        type: 'Groceries',
         amountText: '',
       );
 
@@ -66,8 +66,8 @@ void main() {
     });
 
     test('returns amountError when amount is zero', () {
-      final result = IncomeValidator.validateIncome(
-        type: 'Salary',
+      final result = ExpenseValidator.validateExpense(
+        type: 'Groceries',
         amountText: '0',
       );
 
@@ -76,8 +76,8 @@ void main() {
     });
 
     test('returns amountError when amount is negative', () {
-      final result = IncomeValidator.validateIncome(
-        type: 'Salary',
+      final result = ExpenseValidator.validateExpense(
+        type: 'Groceries',
         amountText: '-50',
       );
 
@@ -85,9 +85,10 @@ void main() {
       expect(result.amountError, 'Amount must be positive');
     });
 
-    test('returns amountError when amount has more than 2 decimal places', () {
-      final result = IncomeValidator.validateIncome(
-        type: 'Salary',
+    test('returns amountError when amount has more than 2 decimal places',
+        () {
+      final result = ExpenseValidator.validateExpense(
+        type: 'Groceries',
         amountText: '50.123',
       );
 
@@ -95,21 +96,11 @@ void main() {
       expect(result.amountError, 'Invalid amount format');
     });
 
-    test('returns amountError when amount exceeds max', () {
-      final result = IncomeValidator.validateIncome(
-        type: 'Salary',
-        amountText: '1000000000',
-      );
-
-      expect(result.isValid, isFalse);
-      expect(result.amountError, 'Amount too large');
-    });
-
     test('returns descriptionError when description exceeds 200 chars', () {
       final longDesc = 'a' * 201;
 
-      final result = IncomeValidator.validateIncome(
-        type: 'Salary',
+      final result = ExpenseValidator.validateExpense(
+        type: 'Groceries',
         amountText: '100',
         description: longDesc,
       );
@@ -121,8 +112,8 @@ void main() {
     test('accepts description of exactly 200 chars', () {
       final longDesc = 'a' * 200;
 
-      final result = IncomeValidator.validateIncome(
-        type: 'Salary',
+      final result = ExpenseValidator.validateExpense(
+        type: 'Groceries',
         amountText: '100',
         description: longDesc,
       );
@@ -132,8 +123,8 @@ void main() {
     });
 
     test('returns amountError for non-numeric text', () {
-      final result = IncomeValidator.validateIncome(
-        type: 'Salary',
+      final result = ExpenseValidator.validateExpense(
+        type: 'Groceries',
         amountText: 'abc',
       );
 
@@ -142,7 +133,7 @@ void main() {
     });
 
     test('returns multiple errors when both type and amount are invalid', () {
-      final result = IncomeValidator.validateIncome(
+      final result = ExpenseValidator.validateExpense(
         type: null,
         amountText: '0',
       );

@@ -9,8 +9,8 @@ Tests MUST be written first and MUST fail before any implementation code is writ
 
 ## Phase 1: Setup
 
-- [ ] T001 Run `flutter analyze` to confirm project compiles
-- [ ] T002 Run `flutter test` to confirm existing tests pass
+- [X] T001 Run `flutter analyze` to confirm project compiles
+- [X] T002 Run `flutter test` to confirm existing tests pass
 
 ---
 
@@ -20,13 +20,13 @@ Tests MUST be written first and MUST fail before any implementation code is writ
 
 ### Tests (write first, must fail)
 
-- [ ] T003 [P] Write unit test for `ExpenseValidator` in `test/services/expense_validator_test.dart` — verify all rules: type required, amount > 0, max 2 decimal places, description ≤ 200 chars
-- [ ] T004 [P] Write unit test for `EntryRepository.getExpenseTypes()` in `test/services/entry_repository_test.dart` — verify hardcoded fallback list with fixed types (e.g., Rent $1000) and variable types (e.g., Groceries)
+- [X] T003 [P] Write unit test for `ExpenseValidator` in `test/services/expense_validator_test.dart` — verify all rules: type required, amount > 0, max 2 decimal places, description ≤ 200 chars
+- [X] T004 [P] Write unit test for `EntryRepository.getExpenseTypes()` in `test/services/entry_repository_test.dart` — verify hardcoded fallback list with fixed types (e.g., Rent $1000) and variable types (e.g., Groceries)
 
 ### Implementation
 
-- [ ] T005 Implement `ExpenseValidator` in `lib/services/expense_validator.dart` — pure Dart class with `validate(ExpenseFormData)` returning `ValidationResult`
-- [ ] T006 Extend `EntryRepository` in `lib/services/entry_repository.dart` — add `getExpenseTypes()` returning hardcoded fallback list (Rent/Fixed 1000, Groceries/Variable, Utilities/Variable)
+- [X] T005 Implement `ExpenseValidator` in `lib/services/expense_validator.dart` — pure Dart class with `validate(ExpenseFormData)` returning `ValidationResult`
+- [X] T006 Extend `EntryRepository` in `lib/services/entry_repository.dart` — add `getExpenseTypes()` returning hardcoded fallback list (Rent/Fixed 1000, Groceries/Variable, Utilities/Variable)
 
 **Checkpoint**: `flutter test` passes for all validator + repository tests
 
@@ -40,17 +40,17 @@ Tests MUST be written first and MUST fail before any implementation code is writ
 
 ### Tests (write first, must fail)
 
-- [ ] T007 [P] [US1] Write widget test for `ExpenseForm` render in `test/widgets/expense_form_test.dart` — verify form renders with type dropdown, amount field, description field, Save/Cancel buttons
-- [ ] T008 [P] [US1] Write widget test for form validation in `test/widgets/expense_form_test.dart` — verify "Please select a type" and "Amount must be positive" errors on Save with invalid data
-- [ ] T009 [P] [US1] Write widget test for variable type save flow in `test/widgets/expense_form_test.dart` — verify valid data calls `addEntry`, returns form data, success popup shows
-- [ ] T010 [P] [US1] Write widget test for `SuccessPopup` in `test/widgets/success_popup_test.dart` — verify dialog shows "Expense added successfully" and updated balance with dismiss button
-- [ ] T011 [P] [US1] Write widget test for `AddExpenseButton` in `test/widgets/add_expense_button_test.dart` — verify tap opens `ExpenseForm`
+- [X] T007 [P] [US1] Write widget test for `ExpenseForm` render in `test/widgets/expense_form_test.dart` — verify form renders with type dropdown, amount field, description field, Save/Cancel buttons
+- [X] T008 [P] [US1] Write widget test for form validation in `test/widgets/expense_form_test.dart` — verify "Please select a type" and "Amount must be positive" errors on Save with invalid data
+- [X] T009 [P] [US1] Write widget test for variable type save flow in `test/widgets/expense_form_test.dart` — verify valid data calls `addEntry`, returns form data, success popup shows
+- [X] T010 [P] [US1] Write widget test for `SuccessPopup` in `test/widgets/success_popup_test.dart` — verify dialog shows "Expense added successfully" and updated balance with dismiss button
+- [X] T011 [P] [US1] Write widget test for `AddExpenseButton` in `test/widgets/add_expense_button_test.dart` — verify tap opens `ExpenseForm`
 
 ### Implementation
 
-- [ ] T012 [US1] Implement `ExpenseForm` in `lib/widgets/expense_form.dart` — `showModalBottomSheet` with `DropdownButton` for types, `TextField` for amount, `TextField` for description (optional), Save/Cancel buttons, calls `ExpenseValidator` on Save
-- [ ] T013 [US1] Implement `SuccessPopup` in `lib/widgets/success_popup.dart` — `AlertDialog` with title "Expense Added Successfully", body showing formatted updated balance, "OK" dismiss button
-- [ ] T014 [US1] Implement `AddExpenseButton` in `lib/widgets/add_expense_button.dart` — `ElevatedButton` that opens `ExpenseForm`, wires Save to `EntryRepository.addEntry()`, shows `SuccessPopup` on completion
+- [X] T012 [US1] Implement `ExpenseForm` in `lib/widgets/expense_form.dart` — `showModalBottomSheet` with `DropdownButton` for types, `TextField` for amount, `TextField` for description (optional), Save/Cancel buttons, calls `ExpenseValidator` on Save
+- [X] T013 [US1] Implement `SuccessPopup` in `lib/widgets/success_popup.dart` — `AlertDialog` with title "Expense Added Successfully", body showing formatted updated balance, "OK" dismiss button
+- [X] T014 [US1] Implement `AddExpenseButton` in `lib/widgets/add_expense_button.dart` — `ElevatedButton` that opens `ExpenseForm`, wires Save to `EntryRepository.addEntry()`, shows `SuccessPopup` on completion
 
 **Checkpoint**: `flutter test` passes. Variable expense flow works end-to-end with validation and success popup.
 
@@ -64,12 +64,12 @@ Tests MUST be written first and MUST fail before any implementation code is writ
 
 ### Tests (write first, must fail)
 
-- [ ] T015 [P] [US2] Write widget test for fixed type auto-fill in `test/widgets/expense_form_test.dart` — verify selecting a fixed type pre-fills the amount field with the type's `fixedAmount`
-- [ ] T016 [P] [US2] Write widget test for fixed type editable amount in `test/widgets/expense_form_test.dart` — verify pre-filled amount can be overridden by user
+- [X] T015 [P] [US2] Write widget test for fixed type auto-fill in `test/widgets/expense_form_test.dart` — verify selecting a fixed type pre-fills the amount field with the type's `fixedAmount`
+- [X] T016 [P] [US2] Write widget test for fixed type editable amount in `test/widgets/expense_form_test.dart` — verify pre-filled amount can be overridden by user
 
 ### Implementation
 
-- [ ] T017 [US2] Add fixed-type auto-fill to `ExpenseForm` in `lib/widgets/expense_form.dart` — `onChanged` handler on the type dropdown checks `isFixed` and pre-fills amount `TextEditingController` with `fixedAmount.toString()`
+- [X] T017 [US2] Add fixed-type auto-fill to `ExpenseForm` in `lib/widgets/expense_form.dart` — `onChanged` handler on the type dropdown checks `isFixed` and pre-fills amount `TextEditingController` with `fixedAmount.toString()`
 
 **Checkpoint**: `flutter test` passes. Selecting a fixed type auto-fills amount; amount field remains editable.
 
@@ -83,11 +83,11 @@ Tests MUST be written first and MUST fail before any implementation code is writ
 
 ### Tests (write first, must fail)
 
-- [ ] T018 [US3] Write widget test for Cancel flow in `test/widgets/expense_form_test.dart` — verify tapping Cancel closes form, returns `null`, no entry saved
+- [X] T018 [US3] Write widget test for Cancel flow in `test/widgets/expense_form_test.dart` — verify tapping Cancel closes form, returns `null`, no entry saved
 
 ### Implementation
 
-- [ ] T019 [US3] Cancel is already handled by the `ExpenseForm` widget (Cancel button calls `Navigator.pop(context, null)`) — verify implementation is correct
+- [X] T019 [US3] Cancel is already handled by the `ExpenseForm` widget (Cancel button calls `Navigator.pop(context, null)`) — verify implementation is correct
 
 **Checkpoint**: `flutter test` passes. Cancel closes form without saving.
 
@@ -95,8 +95,8 @@ Tests MUST be written first and MUST fail before any implementation code is writ
 
 ## Phase 6: Polish
 
-- [ ] T020 Run `flutter analyze` — zero errors and warnings
-- [ ] T021 Run `flutter test` — all 15+ tests pass
+- [X] T020 Run `flutter analyze` — zero errors and warnings
+- [X] T021 Run `flutter test` — all 130+ tests pass
 
 ---
 

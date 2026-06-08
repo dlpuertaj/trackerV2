@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:money_tracker/models/entry.dart';
 import 'package:money_tracker/services/entry_repository.dart';
-import 'package:money_tracker/widgets/income_form.dart';
+import 'package:money_tracker/widgets/expense_form.dart';
 
 void main() {
-  group('IncomeForm', () {
+  group('ExpenseForm', () {
     late EntryRepository repository;
 
     setUp(() {
@@ -18,7 +18,7 @@ void main() {
           home: Scaffold(
             body: Builder(
               builder: (context) => ElevatedButton(
-                onPressed: () => showIncomeForm(
+                onPressed: () => showExpenseForm(
                   context,
                   repository: repository,
                 ),
@@ -36,7 +36,7 @@ void main() {
       await tester.tap(find.text('Open'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Add Income'), findsOneWidget);
+      expect(find.text('Add Expense'), findsOneWidget);
       expect(find.byType(DropdownButtonFormField<String>), findsOneWidget);
       expect(find.byType(TextField), findsNWidgets(2));
       expect(find.text('Save'), findsOneWidget);
@@ -56,22 +56,35 @@ void main() {
       expect(find.text('Amount must be positive'), findsOneWidget);
     });
 
-    testWidgets('saves income entry on valid input', (tester) async {
+    testWidgets('selecting fixed type pre-fills amount field', (tester) async {
       await openForm(tester);
       await tester.tap(find.text('Open'));
       await tester.pumpAndSettle();
 
-      // Select type
+      // Select Rent (fixed type with $1000)
       await tester.tap(find.byType(DropdownButtonFormField<String>));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Salary').last);
+      await tester.tap(find.textContaining('Rent').last);
       await tester.pumpAndSettle();
 
-      // Enter amount
-      await tester.enterText(find.byType(TextField).first, '5000');
+      final amountField = tester.widget<TextField>(find.byType(TextField).first);
+      expect(amountField.controller?.text, '1000.00');
+    });
 
-      // Enter description
-      await tester.enterText(find.byType(TextField).last, 'Monthly pay');
+    testWidgets('pre-filled amount from fixed type can be overridden',
+        (tester) async {
+      await openForm(tester);
+      await tester.tap(find.text('Open'));
+      await tester.pumpAndSettle();
+
+      // Select Rent — auto-fills $1000
+      await tester.tap(find.byType(DropdownButtonFormField<String>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.textContaining('Rent').last);
+      await tester.pumpAndSettle();
+
+      // Override amount
+      await tester.enterText(find.byType(TextField).first, '950');
 
       // Save
       await tester.tap(find.text('Save'));
@@ -79,10 +92,7 @@ void main() {
 
       final entries = repository.getAllEntries();
       expect(entries.length, 1);
-      expect(entries.first.amount, 5000.0);
-      expect(entries.first.type, EntryType.income);
-      expect(entries.first.category, 'Salary');
-      expect(entries.first.description, 'Monthly pay');
+      expect(entries.first.amount, 950.0);
     });
 
     testWidgets('Cancel closes form without saving', (tester) async {
@@ -93,9 +103,9 @@ void main() {
       // Select type and enter data
       await tester.tap(find.byType(DropdownButtonFormField<String>));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Salary').last);
+      await tester.tap(find.text('Groceries').last);
       await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextField).first, '5000');
+      await tester.enterText(find.byType(TextField).first, '50');
 
       // Tap Cancel
       await tester.tap(find.text('Cancel'));
@@ -104,7 +114,37 @@ void main() {
       // Verify no entry was saved
       expect(repository.getAllEntries(), isEmpty);
       // Verify form is closed
-      expect(find.text('Add Income'), findsNothing);
+      expect(find.text('Add Expense'), findsNothing);
+    });
+
+    testWidgets('saves expense entry on valid input for variable type',
+        (tester) async {
+      await openForm(tester);
+      await tester.tap(find.text('Open'));
+      await tester.pumpAndSettle();
+
+      // Select type (Groceries — variable)
+      await tester.tap(find.byType(DropdownButtonFormField<String>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Groceries').last);
+      await tester.pumpAndSettle();
+
+      // Enter amount
+      await tester.enterText(find.byType(TextField).first, '50');
+
+      // Enter description
+      await tester.enterText(find.byType(TextField).last, 'Weekly shop');
+
+      // Save
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+
+      final entries = repository.getAllEntries();
+      expect(entries.length, 1);
+      expect(entries.first.amount, 50.0);
+      expect(entries.first.type, EntryType.expense);
+      expect(entries.first.category, 'Groceries');
+      expect(entries.first.description, 'Weekly shop');
     });
   });
 }

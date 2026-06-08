@@ -1,5 +1,6 @@
 import 'dart:async';
 import '../models/entry.dart';
+import '../models/expense_type.dart';
 
 class EntryRepository {
   final List<Entry> _entries = [];
@@ -19,6 +20,14 @@ class EntryRepository {
 
   List<String> getIncomeTypes() {
     return ['Salary', 'Loan', 'Investment', 'Gift', 'Other'];
+  }
+
+  List<ExpenseType> getExpenseTypes() {
+    return [
+      ExpenseType(name: 'Rent', isFixed: true, fixedAmount: 1000.0),
+      ExpenseType(name: 'Groceries', isFixed: false),
+      ExpenseType(name: 'Utilities', isFixed: false),
+    ];
   }
 
   void addEntry(Entry entry) {

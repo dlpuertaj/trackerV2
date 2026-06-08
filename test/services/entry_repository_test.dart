@@ -111,6 +111,32 @@ void main() {
       expect(types, ['Salary', 'Loan', 'Investment', 'Gift', 'Other']);
     });
 
+    test('getExpenseTypes returns hardcoded fallback list', () {
+      final types = repository.getExpenseTypes();
+
+      expect(types.length, 3);
+      expect(types[0].name, 'Rent');
+      expect(types[0].isFixed, isTrue);
+      expect(types[0].fixedAmount, 1000.0);
+      expect(types[1].name, 'Groceries');
+      expect(types[1].isFixed, isFalse);
+      expect(types[1].fixedAmount, isNull);
+      expect(types[2].name, 'Utilities');
+      expect(types[2].isFixed, isFalse);
+      expect(types[2].fixedAmount, isNull);
+    });
+
+    test('getIncomeTypes returns hardcoded fallback list', () {
+      final types = repository.getIncomeTypes();
+
+      expect(types.length, 5);
+      expect(types[0], 'Salary');
+      expect(types[1], 'Loan');
+      expect(types[2], 'Investment');
+      expect(types[3], 'Gift');
+      expect(types[4], 'Other');
+    });
+
     test('getAllEntries returns entries in reverse-chronological order', () {
       final now = DateTime.now();
       final entry1 = Entry(
