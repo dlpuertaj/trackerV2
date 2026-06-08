@@ -28,6 +28,7 @@ class AddExpenseButton extends StatelessWidget {
           final entry = await showExpenseForm(
             context,
             repository: repository,
+            typeRepository: typeRepository,
           );
           if (entry != null && context.mounted) {
             final entries = repository.getAllEntries();

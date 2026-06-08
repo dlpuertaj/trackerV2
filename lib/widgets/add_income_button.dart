@@ -28,6 +28,7 @@ class AddIncomeButton extends StatelessWidget {
           final entry = await showIncomeForm(
             context,
             repository: repository,
+            typeRepository: typeRepository,
           );
           if (entry != null && context.mounted) {
             final entries = repository.getAllEntries();

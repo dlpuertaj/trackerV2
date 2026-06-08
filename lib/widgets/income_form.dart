@@ -2,22 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:money_tracker/models/entry.dart';
 import 'package:money_tracker/services/entry_repository.dart';
 import 'package:money_tracker/services/income_validator.dart';
+import 'package:money_tracker/services/type_repository.dart';
 
 Future<Entry?> showIncomeForm(
   BuildContext context, {
   required EntryRepository repository,
+  required TypeRepository typeRepository,
 }) {
   return showModalBottomSheet<Entry>(
     context: context,
     isScrollControlled: true,
-    builder: (context) => _IncomeForm(repository: repository),
+    builder: (context) => _IncomeForm(
+      repository: repository,
+      typeRepository: typeRepository,
+    ),
   );
 }
 
 class _IncomeForm extends StatefulWidget {
   final EntryRepository repository;
+  final TypeRepository typeRepository;
 
-  const _IncomeForm({required this.repository});
+  const _IncomeForm({
+    required this.repository,
+    required this.typeRepository,
+  });
 
   @override
   State<_IncomeForm> createState() => _IncomeFormState();
@@ -36,7 +45,10 @@ class _IncomeFormState extends State<_IncomeForm> {
   @override
   void initState() {
     super.initState();
-    _types = widget.repository.getIncomeTypes();
+    _types = [
+      ...widget.repository.getIncomeTypes(),
+      ...widget.typeRepository.getIncomeTypes().map((t) => t.name),
+    ];
   }
 
   @override

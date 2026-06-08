@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:money_tracker/models/entry.dart';
 import 'package:money_tracker/services/entry_repository.dart';
+import 'package:money_tracker/services/type_repository.dart';
 import 'package:money_tracker/widgets/income_form.dart';
 
 void main() {
   group('IncomeForm', () {
     late EntryRepository repository;
+    late TypeRepository typeRepository;
 
     setUp(() {
       repository = EntryRepository();
+      typeRepository = TypeRepository();
     });
 
     Future<void> openForm(WidgetTester tester) {
@@ -21,6 +24,7 @@ void main() {
                 onPressed: () => showIncomeForm(
                   context,
                   repository: repository,
+                  typeRepository: typeRepository,
                 ),
                 child: const Text('Open'),
               ),

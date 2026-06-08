@@ -2,22 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:money_tracker/models/entry.dart';
 import 'package:money_tracker/services/entry_repository.dart';
 import 'package:money_tracker/services/expense_validator.dart';
+import 'package:money_tracker/services/type_repository.dart';
 
 Future<Entry?> showExpenseForm(
   BuildContext context, {
   required EntryRepository repository,
+  required TypeRepository typeRepository,
 }) {
   return showModalBottomSheet<Entry>(
     context: context,
     isScrollControlled: true,
-    builder: (context) => _ExpenseForm(repository: repository),
+    builder: (context) => _ExpenseForm(
+      repository: repository,
+      typeRepository: typeRepository,
+    ),
   );
 }
 
 class _ExpenseForm extends StatefulWidget {
   final EntryRepository repository;
+  final TypeRepository typeRepository;
 
-  const _ExpenseForm({required this.repository});
+  const _ExpenseForm({
+    required this.repository,
+    required this.typeRepository,
+  });
 
   @override
   State<_ExpenseForm> createState() => _ExpenseFormState();
@@ -36,9 +45,11 @@ class _ExpenseFormState extends State<_ExpenseForm> {
   @override
   void initState() {
     super.initState();
-    _types = widget.repository.getExpenseTypes()
-        .map((t) => _ExpenseTypeItem(name: t.name, isFixed: t.isFixed, fixedAmount: t.fixedAmount))
-        .toList();
+    final defaults = widget.repository.getExpenseTypes()
+        .map((t) => _ExpenseTypeItem(name: t.name, isFixed: t.isFixed, fixedAmount: t.fixedAmount));
+    final userCreated = widget.typeRepository.getExpenseTypes()
+        .map((t) => _ExpenseTypeItem(name: t.name, isFixed: t.isFixed, fixedAmount: t.fixedAmount));
+    _types = [...defaults, ...userCreated];
   }
 
   @override
