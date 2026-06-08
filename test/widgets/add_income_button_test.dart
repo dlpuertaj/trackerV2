@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:money_tracker/services/entry_repository.dart';
+import 'package:money_tracker/services/type_repository.dart';
 import 'package:money_tracker/widgets/add_income_button.dart';
 
 void main() {
   group('AddIncomeButton', () {
     testWidgets('tap opens IncomeForm and saves entry', (tester) async {
       final repository = EntryRepository();
+      final typeRepository = TypeRepository();
 
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: AddIncomeButton(repository: repository),
+            body: AddIncomeButton(
+              repository: repository,
+              typeRepository: typeRepository,
+            ),
           ),
         ),
       );
@@ -26,11 +31,15 @@ void main() {
 
     testWidgets('complete save flow works end-to-end', (tester) async {
       final repository = EntryRepository();
+      final typeRepository = TypeRepository();
 
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: AddIncomeButton(repository: repository),
+            body: AddIncomeButton(
+              repository: repository,
+              typeRepository: typeRepository,
+            ),
           ),
         ),
       );
